@@ -106,6 +106,23 @@ def dfs_util(graph, vertex, visited, parent):
     return False
 
 
+def get_edges(graph):
+    edges = []
+    for i in range(len(graph)):
+        for j in range(i + 1, len(graph)):
+            if i != j and graph[i][j] != 0:
+                edges.append([i, j, graph[i][j]])
+    return edges
+
+
+def get_node_degree(graph, node):
+    degree = 0
+    for i in range(len(graph)):
+        if graph[node][i] > 0:
+            degree += 1
+    return degree
+
+
 def print_graph(graph):
     for row in graph:
         print(row)
