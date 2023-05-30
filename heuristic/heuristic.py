@@ -1,14 +1,6 @@
 import time
 from helpers import kruskal_mst, draw_graph, get_node_degree, create_graph_from_edges
-from brute_force.sample_generation import generate_weighted_undirected_connected_graph as generate_sample
-
-sample_graph = [
-        [0, 3, 2, 0, 0],
-        [3, 0, 1, 0, 3],
-        [2, 1, 0, 4, 0],
-        [0, 0, 4, 0, 2],
-        [0, 3, 0, 2, 0]
-]
+from sample_generation import generate_weighted_undirected_connected_graph as generate_sample
 
 
 def infeasible_nodes(graph, edge, degree):
@@ -32,7 +24,8 @@ def blacklisting_function(graph, tree, degree, edge):
     old_weight = graph[edge[0]][edge[1]]
     if old_weight == w_min:
         return
-    new_weight = old_weight + infeasible_nodes(graph, edge, degree) * ((old_weight - w_min) / (w_max - w_min)) * w_max
+    new_weight = old_weight + infeasible_nodes(graph, edge, degree) * (
+            (old_weight - w_min) / (w_max - w_min) ) * w_max
     graph[edge[0]][edge[1]] = new_weight
     graph[edge[1]][edge[0]] = new_weight
 
@@ -58,13 +51,8 @@ def heuristic(graph: list, degree: int):
 def main():
     graph = generate_sample(num_nodes=12, min_weight=1, max_weight=4, edge_probability=0.5)
     degree_constraint = 3
-    draw_graph(graph)
-    kruskal_edges = kruskal_mst(graph)[0]
-    first_kruskal_graph = create_graph_from_edges(len(graph), kruskal_edges)
-    draw_graph(first_kruskal_graph)
-    # time.sleep(10)
     tree, tree_graph = heuristic(graph, degree_constraint)
-    draw_graph(tree_graph)
+    print(f"Heuristic Minimum Spanning Tree: {tree_graph}")
 
 
 if __name__ == '__main__':
